@@ -3,7 +3,13 @@
 CMD=${1:-"exit 0"}
 
 # mount the NFS jobs share
-sudo mount -t nfs4 spark-nfs.wink.com:/var/share/nfs/data /mnt/nfs
+# which are we mounting?
+MOUNT_PATH="/nfs/integration" # int by default
+if [[ $SPARK_ENV != "" ]]; then
+  MOUNT_PATH="/nfs/${SPARK_ENV}"
+fi
+echo "Mounting $MOUNT_PATH to /mnt/nfs"
+sudo mount -t nfs -o resvport,nolock,v3 spark-nfs.wink.com:$MOUNT_PATH /mnt/nfs
 
 # start spark-standalone in the appropriate configuration
 if [[ "$CMD" == "master" ]]; then
