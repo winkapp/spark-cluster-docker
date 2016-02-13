@@ -1,0 +1,61 @@
+{ "defaultAction": "SCMP_ACT_ALLOW", 
+  "syscalls":
+    [ 
+      { "name": "acct", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "adjtimex", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "clock_adjtime", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "clock_settime", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "bpf", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "create_module", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "query_module", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "kexec_file_load", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "kexec_load", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "lookup_dcookie", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "move_pages", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "pivot_root", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "setns", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "swapon", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "swapoff", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "vm86", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "vm86old", 
+        "action": "SCMP_ACT_ERRNO" 
+      }, 
+      { "name": "chown", 
+        "action": "SCMP_ACT_ERRNO" },
+      { "name": "chmod", 
+        "action": "SCMP_ACT_ERRNO" 
+      } 
+    ] 
+}
