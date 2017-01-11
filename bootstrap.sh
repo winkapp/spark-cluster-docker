@@ -1,8 +1,8 @@
 #!/bin/bash
 
 CMD=${1:-"exit 0"}
-MASTER_MEM = ${SPARK_MASTER_MEM:-"1G"}
-WORKER_MEM = ${SPARK_WORKER_MEM:-"1G"}
+MASTER_MEM=${SPARK_MASTER_MEM:-"1G"}
+WORKER_MEM=${SPARK_WORKER_MEM:-"1G"}
 
 if [[ "$CMD" == "master" ]]; then
   /bin/bash -c "$SPARK_HOME/sbin/start-master.sh -m $MASTER_MEM -h $SPARK_MASTER_HOST"
