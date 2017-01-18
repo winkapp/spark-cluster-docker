@@ -10,9 +10,7 @@ to spin up a single worker and master
 
 `$ docker-compose down` will take them down again
 
-`$ docker-compose scale spark-worker=X` will spin up `X` additional spark workers, and attach them to your master
-
-~~have fun~~
+have fun!
 
 ### With vanilla docker
 
@@ -31,6 +29,8 @@ To quickly spin up a Spark cluster, make sure you have Docker installed, and iss
 ### Web UI & Healthcheck
 
 After about a minute, you should be able to hit the spark web UI. If you are using OSX and docker-machine, go to http://{ip of docker host vm}:8080. If you don't know the ip of your docker host vm, try `docker-machine ls`. If you are using linux, just go to http://localhost:8080. You should see the Spark Web UI with one worker active.
+
+similarly, http://localhost:8081 will show you the worker ui
 
 Now we will submit a job to make sure our cluster is working.
 
