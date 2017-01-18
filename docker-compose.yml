@@ -14,7 +14,6 @@ services:
     command: /usr/local/bootstrap.sh worker
     ports:
       - "8081:8081"
-      - "4040:4040"
     links:
       - spark-master
     environment:
