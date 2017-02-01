@@ -9,7 +9,7 @@ if [[ "$CMD" == "master" ]]; then
 elif [[ "$CMD" == "worker" ]]; then
   /bin/bash -c "$SPARK_HOME/sbin/start-slave.sh -m $WORKER_MEM $SPARK_MASTER_URL"
   /bin/bash -c "$SPARK_HOME/sbin/start-shuffle-service.sh"
-  /bin/bash -c "tail -f $SPARK_HOME/logs/spark--org.apache.spark.deploy.worker.Worker*"
+  /bin/bash -c "tail -f $SPARK_HOME/logs/spark--org.apache.spark.deploy.worker.Worker* -f $SPARK_HOME/logs/spark--org.apache.spark.deploy.ExternalShuffleService*"
 else
   /bin/bash -c "$*"
 fi
