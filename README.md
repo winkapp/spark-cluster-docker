@@ -28,6 +28,32 @@ To quickly spin up a Spark cluster, make sure you have Docker installed, and iss
     SPARK_MASTER_URL=spark://spark-master:7077 \
     winkapp/spark-standalone worker
 
+### Dynamic Resource Allocation
+[Dynamic Resource Allocation](http://spark.apache.org/docs/latest/job-scheduling.html#dynamic-resource-allocation) is a feature offered in Spark standalone mode that allows a running job scale the number of executors it expects as the job resource consumption changes.
+
+Executors (the members of worker nodes that perform `tasks`) are requested if the job has tasks waiting in queue, and are evicted if they remain idle for 60s (by default - this value is configurable)
+
+It is enabled by starting a `shuffle-service` alongside each worker, that keeps state on shuffle file locations to prevent recalculating on killed executors.
+
+However, a job will only _use_ dynamic resource allocation if the runtime has the following configuration:
+
+|Property                         |Value |
+|:-------------------------------:|-----:|
+|`spark.shuffle.service.enabled`  |true  |
+|`spark.dynamicAllocation.enabled`|true  |
+
+this can be set in `/conf/spark-defaults.conf`,
+in the runtime command: `spark-submit --conf spark.shuffle.service.enabled=true --confg spark.dynamicAllocation.enabled=true`
+or in application code:
+
+```scala
+  val conf = new SparkConf()
+    .set("spark.shuffle.service.enabled", "true") 
+    .set("spark.dynamicAllocation.enabled", "true")
+```
+
+[Here's a good description of how it works](http://jerryshao.me/architecture/2015/08/22/spark-dynamic-allocation-investigation/)
+[and a good description of why to user it](http://www.slideshare.net/databricks/dynamic-allocation-in-spark)
 ### Web UI & Healthcheck
 
 After about a minute, you should be able to hit the spark web UI. If you are using OSX and docker-machine, go to http://{ip of docker host vm}:8080. If you don't know the ip of your docker host vm, try `docker-machine ls`. If you are using linux, just go to http://localhost:8080. You should see the Spark Web UI with one worker active.
