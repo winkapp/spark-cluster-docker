@@ -35,6 +35,9 @@ Executors (the members of worker nodes that perform `tasks`) are requested if th
 
 It is enabled by starting a `shuffle-service` alongside each worker, that keeps state on shuffle file locations to prevent recalculating on killed executors.
 
+This feature is really built around deploying on a multi-tenant spark cluster - where resources need to be shared between processes.
+However, between it and an dynamic scaling cluster courtesy of Kubernetes - we should be able to maintain a cluster that is only as large as the processes that run on it.
+
 However, a job will only _use_ dynamic resource allocation if the runtime has the following configuration:
 
 |Property                         |Value |
