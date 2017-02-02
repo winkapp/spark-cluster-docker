@@ -2,20 +2,25 @@ version: '2'
 services:
   spark-master:
     build: .
-    command: /usr/local/bootstrap.sh master
     ports:
       - "8080:8080"
       - "7077:7077"
       - "6066:6066"
     environment:
       - SPARK_MASTER_HOST=spark-master
+    command: /bin/bash -c "/usr/local/spark/sbin/start-master.sh -h spark-master"
+  spark-shuffle: 
+    build: .
+    links:
+      - spark-worker
+    command: /bin/bash -c "/usr/local/spark/sbin/start-shuffle-service.sh"
   spark-worker:
     build: .
-    command: /usr/local/bootstrap.sh worker
     ports:
       - "8081"
     links:
       - spark-master
     environment:
       - SPARK_MASTER_URL=spark://spark-master:7077
-        
+      - WORKER_MEM=1g
+    command: /bin/bash -c "/usr/local/spark/sbin/start-slave.sh -m 1g spark://spark-master:7077"
