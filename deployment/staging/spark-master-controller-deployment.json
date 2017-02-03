@@ -1,0 +1,99 @@
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "spark-master-controller-2-1-0",
+        "namespace": "spark-cluster",
+        "labels": {
+            "name": "spark-master-controller-2-1-0",
+            "environment": "staging",
+            "team": "data",
+            "tag": "2.1.0"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+          "matchLabels": {
+              "name": "spark-master-controller-2-1-0",
+              "environment": "staging",
+              "team": "data",
+              "tag": "2.1.0"
+          }
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "spark-master-controller-2-1-0",
+                    "environment": "staging",
+                    "team": "data",
+                    "tag": "2.1.0"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "spark-master-controller-2-1-0",
+                        "image": "quay.io/winkapp/spark-standalone:2.1.0",
+                        "imagePullPolicy": "Always",
+                        "livenessProbe": {
+                          "timeoutSeconds": 10,
+                          "failureThreshold": 3,
+                          "successThreshold": 1,
+                          "initialDelaySeconds": 10,
+                          "periodSeconds": 30,
+                          "httpGet": {
+                            "path": "/",
+                            "port": 8080,
+                            "scheme": "HTTP"
+                          }
+                        },
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 7077,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_MASTER_HOST",
+                                "value": "spark-master-controller-2-1-0"
+                            },
+                            {
+                                "name": "SPARK_MASTER_PORT",
+                                "value": "7077"
+                            },
+                            {
+                                "name": "SPARK_MASTER_MEMORY",
+                                "valueFrom": {
+                                  "resourceFieldRef": {
+                                    "resource": "requests.memory"
+                                  }
+                                }
+                            }
+                        ],
+                        "args": [
+                          "/bin/bash",
+                          "-c",
+                          "\"/user/local/spark/sbint/start-master.sh $SPARK_MASTER_HOST\""
+                        ],
+                        "resources": {
+                            "requests":{
+                                "memory": "4000Mi",
+                                "cpu": "4"
+                            },
+                            "limits": {
+                                "memory": "4000Mi",
+                                "cpu": "4"
+                            }
+                        }
+                    }
+                ]
+              }
+          }
+    }
+}
