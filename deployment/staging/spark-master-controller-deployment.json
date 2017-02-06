@@ -13,14 +13,6 @@
     },
     "spec": {
         "replicas": 1,
-        "selector": {
-          "matchLabels": {
-              "name": "spark-master-controller-2-1-0",
-              "environment": "staging",
-              "team": "data",
-              "tag": "2.1.0"
-          }
-        },
         "template": {
             "metadata": {
                 "labels": {
@@ -61,7 +53,7 @@
                         "env": [
                             {
                                 "name": "SPARK_MASTER_HOST",
-                                "value": "spark-master-controller-2-1-0"
+                                "value": "spark-cluster-master-2-1-0"
                             },
                             {
                                 "name": "SPARK_MASTER_PORT",
@@ -78,8 +70,7 @@
                         ],
                         "args": [
                           "/bin/bash",
-                          "-c",
-                          "\"/user/local/spark/sbint/start-master.sh $SPARK_MASTER_HOST\""
+                          "/usr/local/spark/sbin/start-master.sh"
                         ],
                         "resources": {
                             "requests":{
