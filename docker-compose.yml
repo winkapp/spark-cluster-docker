@@ -13,6 +13,8 @@ services:
     build: .
     links:
       - spark-worker
+    ports:
+      - "7337:7337"
     command: /bin/bash -c "/usr/local/spark/sbin/start-shuffle-service.sh"
   spark-worker:
     build: .

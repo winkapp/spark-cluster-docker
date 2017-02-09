@@ -1,0 +1,111 @@
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "spark-worker-controller-2-1-0",
+        "namespace": "spark-cluster",
+        "labels": {
+            "name": "spark-worker-controller-2-1-0",
+            "environment": "production",
+            "team": "data",
+            "tag": "2.1.0"
+        }
+    },
+    "spec": {
+        "replicas": 3, 
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "spark-worker-controller-2-1-0",
+                    "environment": "production",
+                    "team": "data",
+                    "tag": "2.1.0"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "spark-worker-controller-2-1-0",
+                        "image": "quay.io/winkapp/spark-standalone:2.1.0",
+                        "livenessProbe": {
+                          "timeoutSeconds": 10,
+                          "failureThreshold": 3,
+                          "initialDelaySeconds": 10,
+                          "periodSeconds": 30,
+                          "httpGet": {
+                            "path": "/",
+                            "port": 8081,
+                            "scheme": "HTTP"
+                          }
+                        },
+                        "ports": [
+                            {
+                                "containerPort": 8081,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_WORKER_MEMORY",
+                                "valueFrom": {
+                                  "resourceFieldRef" : {
+                                    "resource": "requests.memory"
+                                  }
+                                }
+                            },
+                            {
+                                "name": "SPARK_MASTER_HOST",
+                                "value": "spark-cluster-master-2-1-0"
+                            },
+                            {
+                                "name": "SPARK_MASTER_PORT",
+                                "value": "7077"
+                            }
+                        ],
+                        "args": [
+                          "/bin/bash",
+                          "/usr/local/spark/sbin/start-slave.sh",
+                          "spark://$(SPARK_MASTER_HOST):$(SPARK_MASTER_PORT)"
+                        ],
+                        "resources": {
+                            "requests":{
+                                "memory": "4000Mi",
+                                "cpu": "4"
+                            },
+                            "limits": {
+                                "memory": "4000Mi",
+                                "cpu": "4"
+                            }
+                        },
+                        "imagePullPolicy": "IfNotPresent"
+                    },
+                    {
+                        "name": "spark-shuffle-service",
+                        "image": "quay.io/winkapp/spark-standalone:2.1.0",
+                        "ports": [
+                            {
+                                "containerPort": 7337,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "args": [
+                          "/bin/bash",
+                          "/usr/local/spark/sbin/start-shuffle-service.sh"
+                        ],
+                        "resources": {
+                            "requests":{
+                                "memory": "256Mi",
+                                "cpu": "1m"
+                            },
+                            "limits": {
+                                "memory": "512Mi",
+                                "cpu": "1"
+                            }
+                        },
+                        "imagePullPolicy": "IfNotPresent"
+                    }
+                ]
+            }
+        }
+    }
+}
