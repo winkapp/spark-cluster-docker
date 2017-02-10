@@ -3,7 +3,7 @@
     "kind": "Service",
     "metadata": {
         "name": "spark-cluster-master-2-1-0",
-        "namespace": "spark-cluster"
+        "namespace": "spark-cluster-production"
     },
     "spec": {
         "clusterIP": "None",
