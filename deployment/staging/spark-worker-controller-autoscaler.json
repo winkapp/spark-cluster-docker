@@ -1,0 +1,17 @@
+{
+  "apiVersion": "autoscaling/v1",
+  "kind": "HorizontalPodAutoscaler",
+  "metadata": {
+    "name": "spark-worker-controller-2-1-0",
+    "namespace": "spark-cluster"
+  },
+  "spec": {
+    "scaleTargetRef": {
+      "apiVersion": "extensions/v1beta1",
+      "kind": "Deployment",
+      "name": "spark-worker-constroller-2-1-0"
+    },
+    "minReplicas": 1,
+    "maxReplicas": 10,
+    "targetCPUUtilizationPercentage": 66
+}
