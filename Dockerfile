@@ -16,6 +16,8 @@ RUN curl -s http://d3kbcqa49mib13.cloudfront.net/spark-1.6.0-bin-hadoop2.6.tgz |
 RUN cd /usr/local && ln -s spark-1.6.0-bin-hadoop2.6 spark
 ENV SPARK_HOME /usr/local/spark
 ENV PATH $SPARK_HOME/bin:$PATH
+# set the python path explicitly because spark looks in the wrong spot
+ENV PYTHON_PATH $PYTHON_PATH:/usr/local/lib/python2.7/dist-packages
 
 ADD bootstrap.sh /usr/local/bootstrap.sh
 ENTRYPOINT ["/usr/local/bootstrap.sh"]
