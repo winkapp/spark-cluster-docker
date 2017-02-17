@@ -17,7 +17,7 @@ RUN cd /usr/local && ln -s spark-1.6.0-bin-hadoop2.6 spark
 ENV SPARK_HOME /usr/local/spark
 ENV PATH $SPARK_HOME/bin:$PATH
 # set the python path explicitly because spark looks in the wrong spot by default
-ENV PYTHONPATH `echo "import sys; print ':'.join(sys.path)" | ython`:$PYTHONPATH
+ENV PYTHONPATH `echo "import sys; print ':'.join(sys.path)" | python`:$PYTHONPATH
 ADD bootstrap.sh /usr/local/bootstrap.sh
 ENTRYPOINT ["/usr/local/bootstrap.sh"]
 WORKDIR /usr/local/spark
