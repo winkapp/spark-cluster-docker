@@ -3,7 +3,8 @@
 To quickly spin up a Spark cluster, make sure you have Docker installed, and issue the following two commands (in different terminal windows):
 
     docker run -it -p 8080:8080 -p 7077:7077 -p 6066:6066 --rm \
-    --name spark-master -e SPARK_MASTER_HOST=spark-master \
+    --name spark-master -h spark-master \
+    -e SPARK_MASTER_HOST=spark-master \
     winkapp/spark-standalone master
 
     docker run -it --link spark-master -e \
