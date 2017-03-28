@@ -15,7 +15,10 @@
             }
         ],
         "selector": {
-            "component": "spark-cluster-master-2-1-0"
+            "name": "spark-master-controller-2-1-0",
+            "environment": "staging",
+            "tag": "2.1.0",
+            "team": "data"
         },
         "type": "NodePort"
     }
