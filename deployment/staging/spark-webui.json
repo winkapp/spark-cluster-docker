@@ -1,0 +1,25 @@
+{
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+        "name": "spark-webui-2-1-0",
+        "namespace": "spark-cluster"
+    },
+    "spec": {
+        "ports": [
+            {
+                "nodePort": 32160,
+                "port": 8080,
+                "protocol": "TCP",
+                "targetPort": 8080
+            }
+        ],
+        "selector": {
+            "name": "spark-master-controller-2-1-0",
+            "environment": "staging",
+            "tag": "2.1.0",
+            "team": "data"
+        },
+        "type": "NodePort"
+    }
+}
