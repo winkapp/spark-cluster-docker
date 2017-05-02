@@ -1,0 +1,92 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "annotations": {
+            "deployment.kubernetes.io/revision": "1",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"extensions/v1beta1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{\"deployment.kubernetes.io/revision\":\"2\"},\"generation\":5,\"labels\":{\"component\":\"spark-worker\"},\"name\":\"spark-worker-controller\",\"namespace\":\"spark-cluster-production\"},\"spec\":{\"replicas\":0,\"selector\":{\"matchLabels\":{\"component\":\"spark-worker\"}},\"strategy\":{\"rollingUpdate\":{\"maxSurge\":1,\"maxUnavailable\":1},\"type\":\"RollingUpdate\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"component\":\"spark-worker\"}},\"spec\":{\"containers\":[{\"args\":[\"worker\"],\"env\":[{\"name\":\"SPARK_MASTER_URL\",\"value\":\"spark-cluster-master:7077\"},{\"name\":\"SPARK_WORKER_MEM\",\"value\":\"13G\"}],\"image\":\"quay.io/winkapp/spark-standalone:1.6.0\",\"imagePullPolicy\":\"IfNotPresent\",\"name\":\"spark-worker\",\"ports\":[{\"containerPort\":8081,\"protocol\":\"TCP\"}],\"resources\":{\"limits\":{\"cpu\":\"6\",\"memory\":\"13G\"},\"requests\":{\"cpu\":\"6\",\"memory\":\"13G\"}},\"terminationMessagePath\":\"/dev/termination-log\"}],\"dnsPolicy\":\"ClusterFirst\",\"restartPolicy\":\"Always\",\"securityContext\":{},\"terminationGracePeriodSeconds\":30}}}}"
+        },
+        "creationTimestamp": "2017-02-07T22:10:44Z",
+        "generation": 13,
+        "labels": {
+            "component": "spark-worker"
+        },
+        "name": "spark-worker-controller",
+        "namespace": "spark-cluster-production",
+        "resourceVersion": "9696810",
+        "selfLink": "/apis/extensions/v1beta1/namespaces/spark-cluster-production/deployments/spark-worker-controller",
+        "uid": "4553cbf3-ed82-11e6-b643-0a9a1ae662cc"
+    },
+    "spec": {
+        "replicas": 8,
+        "selector": {
+            "matchLabels": {
+                "component": "spark-worker"
+            }
+        },
+        "strategy": {
+            "rollingUpdate": {
+                "maxSurge": 1,
+                "maxUnavailable": 1
+            },
+            "type": "RollingUpdate"
+        },
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "component": "spark-worker"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "worker"
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_MASTER_URL",
+                                "value": "spark-cluster-master:7077"
+                            },
+                            {
+                                "name": "SPARK_WORKER_MEM",
+                                "value": "13G"
+                            }
+                        ],
+                        "image": "quay.io/winkapp/spark-standalone:1.6.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "spark-worker",
+                        "ports": [
+                            {
+                                "containerPort": 8081,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "6",
+                                "memory": "13G"
+                            },
+                            "requests": {
+                                "cpu": "6",
+                                "memory": "13G"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log"
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "restartPolicy": "Always",
+                "securityContext": {},
+                "terminationGracePeriodSeconds": 30
+            }
+        }
+    },
+    "status": {
+        "availableReplicas": 8,
+        "observedGeneration": 13,
+        "replicas": 8,
+        "updatedReplicas": 8
+    }
+}

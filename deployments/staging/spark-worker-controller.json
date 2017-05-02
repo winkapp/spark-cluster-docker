@@ -1,0 +1,104 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "annotations": {
+            "deployment.kubernetes.io/revision": "10",
+            "kubectl.kubernetes.io/last-applied-configuration": "{\"kind\":\"Deployment\",\"apiVersion\":\"extensions/v1beta1\",\"metadata\":{\"name\":\"spark-worker-controller\",\"namespace\":\"spark-cluster\",\"creationTimestamp\":null,\"labels\":{\"component\":\"spark-worker\"}},\"spec\":{\"replicas\":5,\"selector\":{\"matchLabels\":{\"component\":\"spark-worker\"}},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"component\":\"spark-worker\"}},\"spec\":{\"containers\":[{\"name\":\"spark-worker\",\"image\":\"quay.io/winkapp/spark-standalone:1.6.0\",\"args\":[\"worker\"],\"ports\":[{\"containerPort\":8081,\"protocol\":\"TCP\"}],\"env\":[{\"name\":\"SPARK_MASTER_URL\",\"value\":\"spark-cluster-master:7077\"},{\"name\":\"SPARK_WORKER_MEM\",\"value\":\"13G\"}],\"resources\":{\"limits\":{\"cpu\":\"6\",\"memory\":\"13000Mi\"},\"requests\":{\"cpu\":\"6\",\"memory\":\"13000Mi\"}},\"livenessProbe\":{\"httpGet\":{\"path\":\"/\",\"port\":8081,\"scheme\":\"HTTP\"},\"initialDelaySeconds\":10,\"timeoutSeconds\":10,\"periodSeconds\":30,\"successThreshold\":1,\"failureThreshold\":3},\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\"}},\"strategy\":{}},\"status\":{}}"
+        },
+        "creationTimestamp": "2016-12-12T20:39:14Z",
+        "generation": 26,
+        "labels": {
+            "component": "spark-worker"
+        },
+        "name": "spark-worker-controller",
+        "namespace": "spark-cluster",
+        "resourceVersion": "24997660",
+        "selfLink": "/apis/extensions/v1beta1/namespaces/spark-cluster/deployments/spark-worker-controller",
+        "uid": "0b2b1ffa-c0ab-11e6-a31a-0aa08ff2ab52"
+    },
+    "spec": {
+        "replicas": 5,
+        "selector": {
+            "matchLabels": {
+                "component": "spark-worker"
+            }
+        },
+        "strategy": {
+            "rollingUpdate": {
+                "maxSurge": 1,
+                "maxUnavailable": 1
+            },
+            "type": "RollingUpdate"
+        },
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "component": "spark-worker"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "worker"
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_MASTER_URL",
+                                "value": "spark-cluster-master:7077"
+                            },
+                            {
+                                "name": "SPARK_WORKER_MEM",
+                                "value": "13G"
+                            }
+                        ],
+                        "image": "quay.io/winkapp/spark-standalone:1.6.0",
+                        "imagePullPolicy": "Always",
+                        "livenessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/",
+                                "port": 8081,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 10,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "name": "spark-worker",
+                        "ports": [
+                            {
+                                "containerPort": 8081,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "6",
+                                "memory": "13000Mi"
+                            },
+                            "requests": {
+                                "cpu": "6",
+                                "memory": "13000Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log"
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "restartPolicy": "Always",
+                "securityContext": {},
+                "terminationGracePeriodSeconds": 30
+            }
+        }
+    },
+    "status": {
+        "availableReplicas": 5,
+        "observedGeneration": 26,
+        "replicas": 5,
+        "updatedReplicas": 5
+    }
+}
