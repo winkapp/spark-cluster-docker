@@ -2,7 +2,6 @@
     "apiVersion": "extensions/v1beta1",
     "kind": "Deployment",
     "metadata": {
-        "generation": 7,
         "labels": {
             "component": "spark-cluster-master"
         },
