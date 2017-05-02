@@ -1,0 +1,25 @@
+{
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+        "name": "worker-service",
+        "namespace": "spark-cluster",
+        "resourceVersion": "3986596"
+    },
+    "spec": {
+        "clusterIP": "None",
+        "ports": [
+            {
+                "name": "http",
+                "port": 8081,
+                "protocol": "TCP",
+                "targetPort": 8081
+            }
+        ],
+        "selector": {
+            "component": "spark-worker"
+        },
+        "sessionAffinity": "None",
+        "type": "ClusterIP"
+    }
+}
