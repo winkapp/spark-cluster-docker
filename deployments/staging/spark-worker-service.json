@@ -3,8 +3,7 @@
     "kind": "Service",
     "metadata": {
         "name": "worker-service",
-        "namespace": "spark-cluster",
-        "resourceVersion": "3986596"
+        "namespace": "spark-cluster"
     },
     "spec": {
         "clusterIP": "None",
@@ -19,7 +18,6 @@
         "selector": {
             "component": "spark-worker"
         },
-        "sessionAffinity": "None",
         "type": "ClusterIP"
     }
 }

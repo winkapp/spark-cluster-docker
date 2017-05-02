@@ -6,8 +6,7 @@
             "component": "spark-cluster-master"
         },
         "name": "spark-master-controller",
-        "namespace": "spark-cluster",
-        "resourceVersion": "21045753"
+        "namespace": "spark-cluster"
     },
     "spec": {
         "replicas": 1,

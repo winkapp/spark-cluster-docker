@@ -6,8 +6,7 @@
             "component": "spark-worker"
         },
         "name": "spark-worker-controller",
-        "namespace": "spark-cluster-production",
-        "resourceVersion": "9696810"
+        "namespace": "spark-cluster-production"
     },
     "spec": {
         "replicas": 8,

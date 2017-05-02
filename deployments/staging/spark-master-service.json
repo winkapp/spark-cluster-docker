@@ -3,22 +3,19 @@
     "kind": "Service",
     "metadata": {
         "name": "spark-cluster-master",
-        "namespace": "spark-cluster",
-        "resourceVersion": "14375877"
+        "namespace": "spark-cluster"
     },
     "spec": {
         "clusterIP": "None",
         "ports": [
             {
                 "name": "worker-port",
-                "nodePort": 31565,
                 "port": 7077,
                 "protocol": "TCP",
                 "targetPort": 7077
             },
             {
                 "name": "webui",
-                "nodePort": 31093,
                 "port": 8080,
                 "protocol": "TCP",
                 "targetPort": 8080
@@ -27,7 +24,6 @@
         "selector": {
             "component": "spark-cluster-master"
         },
-        "sessionAffinity": "None",
         "type": "NodePort"
     }
 }
