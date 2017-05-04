@@ -1,0 +1,76 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "component": "spark-worker"
+        },
+        "name": "spark-worker-controller",
+        "namespace": "spark-cluster-production"
+    },
+    "spec": {
+        "replicas": 8,
+        "selector": {
+            "matchLabels": {
+                "component": "spark-worker"
+            }
+        },
+        "strategy": {
+            "rollingUpdate": {
+                "maxSurge": 1,
+                "maxUnavailable": 1
+            },
+            "type": "RollingUpdate"
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "component": "spark-worker"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "worker"
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_MASTER_URL",
+                                "value": "spark-cluster-master:7077"
+                            },
+                            {
+                                "name": "SPARK_WORKER_MEM",
+                                "value": "13G"
+                            }
+                        ],
+                        "image": "quay.io/winkapp/spark-standalone:master",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "spark-worker",
+                        "ports": [
+                            {
+                                "containerPort": 8081,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "6",
+                                "memory": "13G"
+                            },
+                            "requests": {
+                                "cpu": "6",
+                                "memory": "13G"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log"
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "restartPolicy": "Always",
+                "securityContext": {},
+                "terminationGracePeriodSeconds": 30
+            }
+        }
+    }
+}

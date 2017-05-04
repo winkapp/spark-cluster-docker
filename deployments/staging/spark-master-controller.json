@@ -1,0 +1,96 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "component": "spark-cluster-master"
+        },
+        "name": "spark-master-controller",
+        "namespace": "spark-cluster"
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "matchLabels": {
+                "component": "spark-cluster-master"
+            }
+        },
+        "strategy": {
+            "rollingUpdate": {
+                "maxSurge": 1,
+                "maxUnavailable": 1
+            },
+            "type": "RollingUpdate"
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "component": "spark-cluster-master"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "master"
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_MASTER_HOST",
+                                "value": "spark-cluster-master"
+                            },
+                            {
+                                "name": "SPARK_MASTER_PORT",
+                                "value": "7077"
+                            },
+                            {
+                                "name": "SPARK_MASTER_MEM",
+                                "value": "4G"
+                            }
+                        ],
+                        "image": "winkapp/spark-standalone:master",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 10,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "name": "spark-master",
+                        "ports": [
+                            {
+                                "containerPort": 7077,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "4",
+                                "memory": "4000Mi"
+                            },
+                            "requests": {
+                                "cpu": "4",
+                                "memory": "4000Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log"
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "restartPolicy": "Always",
+                "securityContext": {},
+                "terminationGracePeriodSeconds": 30
+            }
+        }
+    }
+}

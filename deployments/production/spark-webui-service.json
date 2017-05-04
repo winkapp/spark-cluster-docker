@@ -1,0 +1,21 @@
+{
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+        "name": "spark-webui",
+        "namespace": "spark-cluster-production"
+    },
+    "spec": {
+        "ports": [
+            {
+                "port": 8080,
+                "protocol": "TCP",
+                "targetPort": 8080
+            }
+        ],
+        "selector": {
+            "component": "spark-cluster-master"
+        },
+        "type": "NodePort"
+    }
+}
