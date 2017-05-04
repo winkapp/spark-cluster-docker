@@ -48,7 +48,7 @@
                                 "value": "4G"
                             }
                         ],
-                        "image": "winkapp/spark-standalone:1.6.0",
+                        "image": "winkapp/spark-standalone:master",
                         "imagePullPolicy": "IfNotPresent",
                         "livenessProbe": {
                             "failureThreshold": 3,

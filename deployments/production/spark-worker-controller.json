@@ -44,7 +44,7 @@
                                 "value": "13G"
                             }
                         ],
-                        "image": "quay.io/winkapp/spark-standalone:1.6.0",
+                        "image": "quay.io/winkapp/spark-standalone:master",
                         "imagePullPolicy": "IfNotPresent",
                         "name": "spark-worker",
                         "ports": [
