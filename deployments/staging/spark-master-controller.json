@@ -48,7 +48,7 @@
                                 "value": "4G"
                             }
                         ],
-                        "image": "winkapp/spark-standalone:master",
+                        "image": "quay.io/winkapp/spark-standalone:master",
                         "imagePullPolicy": "IfNotPresent",
                         "livenessProbe": {
                             "failureThreshold": 3,

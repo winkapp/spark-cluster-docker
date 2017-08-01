@@ -23,7 +23,6 @@
         ],
         "selector": {
             "component": "spark-cluster-master"
-        },
-        "type": "NodePort"
+        }
     }
 }
