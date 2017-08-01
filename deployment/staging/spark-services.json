@@ -27,8 +27,7 @@
             "team": "data",
             "tag": "2.1.0"
         },
-        "sessionAffinity": "None",
-        "type": "NodePort"
+        "sessionAffinity": "None"
     },
     "status": {
         "loadBalancer": {}
