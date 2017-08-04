@@ -46,6 +46,18 @@
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
                         "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/",
+                                "port": 8081,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 10,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
                         "name": "spark-worker",
                         "ports": [
                             {
