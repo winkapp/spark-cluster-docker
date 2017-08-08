@@ -45,7 +45,7 @@
                             }
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
-                        "imagePullPolicy": "IfNotPresent",
+                        "imagePullPolicy": "Always",
                         "livenessProbe": {
                             "failureThreshold": 3,
                             "httpGet": {

@@ -49,7 +49,7 @@
                             }
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
-                        "imagePullPolicy": "IfNotPresent",
+                        "imagePullPolicy": "Always",
                         "name": "spark-master",
                         "ports": [
                             {
