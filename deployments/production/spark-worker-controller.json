@@ -29,6 +29,14 @@
                 }
             },
             "spec": {
+                "tolerations": [{
+                    "key": "dedicated",
+                    "value": "memory",
+                    "effect": "NoSchedule"
+                }],
+                "nodeSelector": {
+                    "instance-type": "memory"
+                },
                 "containers": [
                     {
                         "args": [
