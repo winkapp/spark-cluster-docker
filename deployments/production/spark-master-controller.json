@@ -3,29 +3,21 @@
     "kind": "Deployment",
     "metadata": {
         "labels": {
-            "component": "spark-cluster-master"
+            "component": "spark-cluster-master",
+            "name": "spark-cluster-master",
+            "environment": "production"
         },
         "name": "spark-master-controller",
         "namespace": "spark-cluster-production"
     },
     "spec": {
         "replicas": 1,
-        "selector": {
-            "matchLabels": {
-                "component": "spark-cluster-master"
-            }
-        },
-        "strategy": {
-            "rollingUpdate": {
-                "maxSurge": 1,
-                "maxUnavailable": 1
-            },
-            "type": "RollingUpdate"
-        },
         "template": {
             "metadata": {
                 "labels": {
-                    "component": "spark-cluster-master"
+                    "component": "spark-cluster-master",
+                    "name": "spark-cluster-master",
+                    "environment": "production"
                 }
             },
             "spec": {
@@ -82,10 +74,7 @@
                         "terminationMessagePath": "/dev/termination-log"
                     }
                 ],
-                "dnsPolicy": "ClusterFirst",
-                "restartPolicy": "Always",
-                "securityContext": {},
-                "terminationGracePeriodSeconds": 30
+                "restartPolicy": "Always"
             }
         }
     }

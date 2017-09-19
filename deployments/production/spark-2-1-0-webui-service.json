@@ -8,11 +8,11 @@
             "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:iam::567022000440:server-certificate/wink_wildcard_2016_with_chain",
             "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "https"
         },
-        "name": "spark-webui",
+        "name": "spark-webui-2-1-0",
         "namespace": "spark-cluster-production",
         "labels": {
             "environment": "production",
-            "name": "spark-webui"
+            "name": "spark-webui-2-1-0"
         }
     },
     "spec": {
@@ -25,8 +25,12 @@
             }
         ],
         "selector": {
-            "component": "spark-cluster-master"
+            "environment": "production",
+            "name": "spark-master-controller-2-1-0",
+            "tag": "2.1.0",
+            "team": "data"
         },
+        "sessionAffinity": "None",
         "type": "LoadBalancer",
         "loadBalancerSourceRanges": [
             "52.1.23.50/32",

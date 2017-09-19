@@ -2,10 +2,10 @@
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
-        "name": "spark-cluster-master",
+        "name": "spark-cluster-master-2-1-0",
         "namespace": "spark-cluster-production",
         "labels": {
-            "name": "spark-cluster-master",
+            "name": "spark-cluster-master-2-1-0",
             "environment": "production"
         }
     },
@@ -26,7 +26,10 @@
             }
         ],
         "selector": {
-            "component": "spark-cluster-master"
+            "environment": "production",
+            "name": "spark-master-controller-2-1-0",
+            "tag": "2.1.0",
+            "team": "data"
         },
         "sessionAffinity": "None",
         "type": "ClusterIP"
