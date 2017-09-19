@@ -1,0 +1,28 @@
+{
+  "apiVersion": "v1",
+  "kind": "Service",
+  "metadata": {
+    "labels": {
+      "environment": "production",
+      "name": "log-shuttle",
+      "team": "data"
+    },
+    "name": "log-shuttle",
+    "namespace": "spark-cluster-production"
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "514-514",
+        "port": 514,
+        "protocol": "TCP",
+        "targetPort": 514
+      }
+    ],
+    "selector": {
+      "name": "wink-spark-log-shuttle"
+    },
+    "sessionAffinity": "None",
+    "type": "ClusterIP"
+  }
+}
