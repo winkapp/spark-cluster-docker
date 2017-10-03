@@ -27,7 +27,7 @@
                         "env": [
                             {
                                 "name": "SPARK_MASTER_HOST",
-                                "value": "spark-master"
+                                "value": "spark-cluster-master"
                             },
                             {
                                 "name": "SPARK_MASTER_PORT",
@@ -49,11 +49,11 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "15m",
+                                "cpu": "100m",
                                 "memory": "700Mi"
                             },
                             "requests": {
-                                "cpu": "15m",
+                                "cpu": "100m",
                                 "memory": "700Mi"
                             }
                         }

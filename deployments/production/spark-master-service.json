@@ -2,10 +2,10 @@
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
-        "name": "spark-master",
+        "name": "spark-cluster-master",
         "namespace": "spark-cluster-production",
         "labels": {
-            "name": "spark-master",
+            "name": "spark-cluster-master",
             "environment": "production"
         }
     },

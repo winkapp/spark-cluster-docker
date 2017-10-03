@@ -30,7 +30,7 @@
                         "env": [
                             {
                                 "name": "SPARK_MASTER_HOST",
-                                "value": "spark-master-2-1-0"
+                                "value": "spark-cluster-master-2-1-0"
                             },
                             {
                                 "name": "SPARK_MASTER_PORT",
@@ -39,18 +39,6 @@
                         ],
                         "image": "quay.io/winkapp/spark-standalone:2.1.0",
                         "imagePullPolicy": "Always",
-                        "livenessProbe": {
-                            "failureThreshold": 3,
-                            "httpGet": {
-                                "path": "/",
-                                "port": 8080,
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 10,
-                            "periodSeconds": 30,
-                            "successThreshold": 1,
-                            "timeoutSeconds": 10
-                        },
                         "name": "spark-master-2-1-0",
                         "ports": [
                             {
@@ -64,11 +52,11 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "15m",
+                                "cpu": "100m",
                                 "memory": "700Mi"
                             },
                             "requests": {
-                                "cpu": "15m",
+                                "cpu": "100m",
                                 "memory": "700Mi"
                             }
                         }
