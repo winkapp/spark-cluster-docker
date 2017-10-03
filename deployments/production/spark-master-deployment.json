@@ -3,11 +3,10 @@
     "kind": "Deployment",
     "metadata": {
         "labels": {
-            "component": "spark-cluster-master",
-            "name": "spark-cluster-master",
+            "name": "spark-master",
             "environment": "production"
         },
-        "name": "spark-master-controller",
+        "name": "spark-master",
         "namespace": "spark-cluster-production"
     },
     "spec": {
@@ -15,20 +14,11 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "component": "spark-cluster-master",
-                    "name": "spark-cluster-master",
+                    "name": "spark-master",
                     "environment": "production"
                 }
             },
             "spec": {
-                "tolerations": [{
-                    "key": "dedicated",
-                    "value": "memory",
-                    "effect": "NoSchedule"
-                }],
-                "nodeSelector": {
-                    "instance-type": "memory"
-                },
                 "containers": [
                     {
                         "args": [
@@ -37,15 +27,11 @@
                         "env": [
                             {
                                 "name": "SPARK_MASTER_HOST",
-                                "value": "spark-cluster-master"
+                                "value": "spark-master"
                             },
                             {
                                 "name": "SPARK_MASTER_PORT",
                                 "value": "7077"
-                            },
-                            {
-                                "name": "SPARK_MASTER_MEM",
-                                "value": "4G"
                             }
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
@@ -63,18 +49,16 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "4",
-                                "memory": "4G"
+                                "cpu": "15m",
+                                "memory": "700Mi"
                             },
                             "requests": {
-                                "cpu": "4",
-                                "memory": "4G"
+                                "cpu": "15m",
+                                "memory": "700Mi"
                             }
-                        },
-                        "terminationMessagePath": "/dev/termination-log"
+                        }
                     }
-                ],
-                "restartPolicy": "Always"
+                ]
             }
         }
     }

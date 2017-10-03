@@ -26,9 +26,8 @@
         ],
         "selector": {
             "environment": "production",
-            "name": "spark-master-controller-2-1-0",
-            "tag": "2.1.0",
-            "team": "data"
+            "name": "spark-master-2-1-0",
+            "tag": "2.1.0"
         },
         "sessionAffinity": "None",
         "type": "LoadBalancer",

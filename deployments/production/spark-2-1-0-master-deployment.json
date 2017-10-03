@@ -1,0 +1,80 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "environment": "production",
+            "name": "spark-master-2-1-0",
+            "tag": "2.1.0"
+        },
+        "name": "spark-master-2-1-0",
+        "namespace": "spark-cluster-production"
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "environment": "production",
+                    "name": "spark-master-2-1-0",
+                    "tag": "2.1.0"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "/bin/bash",
+                            "/usr/local/spark/sbin/start-master.sh"
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_MASTER_HOST",
+                                "value": "spark-master-2-1-0"
+                            },
+                            {
+                                "name": "SPARK_MASTER_PORT",
+                                "value": "7077"
+                            }
+                        ],
+                        "image": "quay.io/winkapp/spark-standalone:2.1.0",
+                        "imagePullPolicy": "Always",
+                        "livenessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 10,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "name": "spark-master-2-1-0",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 7077,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "15m",
+                                "memory": "700Mi"
+                            },
+                            "requests": {
+                                "cpu": "15m",
+                                "memory": "700Mi"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

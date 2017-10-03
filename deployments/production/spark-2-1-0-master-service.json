@@ -2,11 +2,11 @@
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
-        "name": "spark-cluster-master-2-1-0",
+        "name": "spark-master-2-1-0",
         "namespace": "spark-cluster-production",
         "labels": {
             "environment": "production",
-            "name": "spark-cluster-master-2-1-0"
+            "name": "spark-master-2-1-0"
         }
     },
     "spec": {
@@ -19,7 +19,7 @@
                 "targetPort": 7077
             },
             {
-                "name": "webui",
+                "name": "web-ui",
                 "port": 8080,
                 "protocol": "TCP",
                 "targetPort": 8080
@@ -27,9 +27,8 @@
         ],
         "selector": {
             "environment": "production",
-            "name": "spark-master-controller-2-1-0",
-            "tag": "2.1.0",
-            "team": "data"
+            "name": "spark-master-2-1-0",
+            "tag": "2.1.0"
         },
         "sessionAffinity": "None",
         "type": "ClusterIP"

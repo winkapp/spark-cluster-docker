@@ -25,7 +25,8 @@
             }
         ],
         "selector": {
-            "component": "spark-cluster-master"
+            "environment": "production",
+            "name": "spark-master"
         },
         "type": "LoadBalancer",
         "loadBalancerSourceRanges": [

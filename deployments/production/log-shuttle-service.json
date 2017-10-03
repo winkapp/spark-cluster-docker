@@ -4,8 +4,7 @@
   "metadata": {
     "labels": {
       "environment": "production",
-      "name": "log-shuttle",
-      "team": "data"
+      "name": "log-shuttle"
     },
     "name": "log-shuttle",
     "namespace": "spark-cluster-production"
