@@ -4,7 +4,7 @@ MAINTAINER Wink
 RUN apt-get update; apt-get install -y curl default-jdk
 
 # install some stuff we know we'll need to support Python stuff in distribution on the workers
-RUN apt-get install -y \
+RUN apt-get update; apt-get install -y \
   python-dev \
   python-pip \
   && pip install \
