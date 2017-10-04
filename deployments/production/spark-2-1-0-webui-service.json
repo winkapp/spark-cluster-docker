@@ -3,10 +3,7 @@
     "kind": "Service",
     "metadata": {
         "annotations": {
-            "service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags": "Environment=production",
-            "service.beta.kubernetes.io/aws-load-balancer-backend-protocol": "http",
-            "service.beta.kubernetes.io/aws-load-balancer-ssl-cert": "arn:aws:iam::567022000440:server-certificate/wink_wildcard_2016_with_chain",
-            "service.beta.kubernetes.io/aws-load-balancer-ssl-ports": "https"
+            "service.beta.kubernetes.io/aws-load-balancer-internal": "0.0.0.0/0"
         },
         "name": "spark-webui-2-1-0",
         "namespace": "spark-cluster-production",
@@ -18,9 +15,8 @@
     "spec": {
         "ports": [
             {
-                "name": "https",
-                "port": 443,
-                "protocol": "TCP",
+                "name": "http",
+                "port": 8080,
                 "targetPort": 8080
             }
         ],
@@ -29,11 +25,6 @@
             "name": "spark-master-2-1-0",
             "tag": "2.1.0"
         },
-        "sessionAffinity": "None",
-        "type": "LoadBalancer",
-        "loadBalancerSourceRanges": [
-            "52.1.23.50/32",
-            "104.247.48.10/32"
-        ]
+        "type": "LoadBalancer"
     }
 }
