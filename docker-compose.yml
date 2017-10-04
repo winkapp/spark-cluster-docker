@@ -9,13 +9,6 @@ services:
     environment:
       - SPARK_MASTER_HOST=spark-master
     command: /bin/bash -c "/usr/local/spark/sbin/start-master.sh -h spark-master"
-  spark-shuffle: 
-    build: .
-    links:
-      - spark-worker
-    ports:
-      - "7337:7337"
-    command: /bin/bash -c "/usr/local/spark/sbin/start-shuffle-service.sh"
   spark-worker:
     build: .
     ports:
@@ -24,5 +17,5 @@ services:
       - spark-master
     environment:
       - SPARK_MASTER_URL=spark://spark-master:7077
-      - WORKER_MEM=1g
     command: /bin/bash -c "/usr/local/spark/sbin/start-slave.sh -m 1g spark://spark-master:7077"
+
