@@ -17,16 +17,11 @@
                 "port": 7077,
                 "protocol": "TCP",
                 "targetPort": 7077
-            },
-            {
-                "name": "webui",
-                "port": 8080,
-                "protocol": "TCP",
-                "targetPort": 8080
             }
         ],
         "selector": {
-            "component": "spark-cluster-master"
+            "environment": "production",
+            "name": "spark-master"
         },
         "sessionAffinity": "None",
         "type": "ClusterIP"

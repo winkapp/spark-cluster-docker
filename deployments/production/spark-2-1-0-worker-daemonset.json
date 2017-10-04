@@ -1,26 +1,24 @@
 {
     "apiVersion": "extensions/v1beta1",
-    "kind": "Deployment",
+    "kind": "DaemonSet",
     "metadata": {
         "labels": {
             "environment": "production",
-            "name": "spark-worker-controller-2-1-0",
-            "tag": "2.1.0",
-            "team": "data"
+            "name": "spark-worker-2-1-0",
+            "tag": "2.1.0"
         },
-        "name": "spark-worker-controller-2-1-0",
+        "name": "spark-worker-2-1-0",
         "namespace": "spark-cluster-production"
     },
     "spec": {
-        "replicas": 3,
         "template": {
             "metadata": {
                 "labels": {
                     "environment": "production",
-                    "name": "spark-worker-controller-2-1-0",
-                    "tag": "2.1.0",
-                    "team": "data"
-                }
+                    "name": "spark-worker-2-1-0",
+                    "tag": "2.1.0"
+                },
+                "name": "spark-worker-2-1-0"
             },
             "spec": {
                 "containers": [
@@ -35,8 +33,15 @@
                                 "name": "SPARK_WORKER_MEMORY",
                                 "valueFrom": {
                                     "resourceFieldRef": {
-                                        "divisor": "0",
                                         "resource": "requests.memory"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "SPARK_WORKER_CORES",
+                                "valueFrom": {
+                                    "resourceFieldRef": {
+                                        "resource": "requests.cpu"
                                     }
                                 }
                             },
@@ -50,7 +55,7 @@
                             }
                         ],
                         "image": "quay.io/winkapp/spark-standalone:2.1.0",
-                        "imagePullPolicy": "IfNotPresent",
+                        "imagePullPolicy": "Always",
                         "livenessProbe": {
                             "failureThreshold": 3,
                             "httpGet": {
@@ -63,7 +68,7 @@
                             "successThreshold": 1,
                             "timeoutSeconds": 10
                         },
-                        "name": "spark-worker-controller-2-1-0",
+                        "name": "spark-worker-2-1-0",
                         "ports": [
                             {
                                 "containerPort": 8081,
@@ -72,38 +77,12 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "4",
-                                "memory": "4000Mi"
+                                "cpu": "2",
+                                "memory": "18Gi"
                             },
                             "requests": {
-                                "cpu": "4",
-                                "memory": "4000Mi"
-                            }
-                        },
-                        "terminationMessagePath": "/dev/termination-log"
-                    },
-                    {
-                        "args": [
-                            "/bin/bash",
-                            "/usr/local/spark/sbin/start-shuffle-service.sh"
-                        ],
-                        "image": "quay.io/winkapp/spark-standalone:2.1.0",
-                        "imagePullPolicy": "IfNotPresent",
-                        "name": "spark-shuffle-service",
-                        "ports": [
-                            {
-                                "containerPort": 7337,
-                                "protocol": "TCP"
-                            }
-                        ],
-                        "resources": {
-                            "limits": {
-                                "cpu": "1",
-                                "memory": "512Mi"
-                            },
-                            "requests": {
-                                "cpu": "1",
-                                "memory": "256Mi"
+                                "cpu": "2",
+                                "memory": "18Gi"
                             }
                         },
                         "terminationMessagePath": "/dev/termination-log"
@@ -113,14 +92,11 @@
                     "instance-type": "memory"
                 },
                 "restartPolicy": "Always",
-                "schedulerName": "default-scheduler",
-                "tolerations": [
-                    {
-                        "effect": "NoSchedule",
-                        "key": "dedicated",
-                        "value": "memory"
-                    }
-                ]
+                "tolerations": [{
+                    "effect": "NoSchedule",
+                    "key": "dedicated",
+                    "value": "memory"
+                }]
             }
         }
     }

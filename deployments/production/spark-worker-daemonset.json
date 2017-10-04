@@ -1,24 +1,22 @@
 {
     "apiVersion": "extensions/v1beta1",
-    "kind": "Deployment",
+    "kind": "DaemonSet",
     "metadata": {
         "labels": {
-            "component": "spark-worker",
             "name": "spark-worker",
             "environment": "production"
         },
-        "name": "spark-worker-controller",
+        "name": "spark-worker",
         "namespace": "spark-cluster-production"
     },
     "spec": {
-        "replicas": 8,
         "template": {
             "metadata": {
                 "labels": {
-                    "component": "spark-worker",
                     "name": "spark-worker",
                     "environment": "production"
-                }
+                },
+                "name": "spark-worker"
             },
             "spec": {
                 "tolerations": [{
@@ -41,7 +39,19 @@
                             },
                             {
                                 "name": "SPARK_WORKER_MEM",
-                                "value": "13G"
+                                "valueFrom": {
+                                    "resourceFieldRef": {
+                                        "resource": "requests.memory"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "SPARK_WORKER_CORES",
+                                "valueFrom": {
+                                    "resourceFieldRef": {
+                                        "resource": "requests.cpu"
+                                    }
+                                }
                             }
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
@@ -67,12 +77,12 @@
                         ],
                         "resources": {
                             "limits": {
-                                "cpu": "6",
-                                "memory": "13G"
+                                "cpu": "11",
+                                "memory": "73Gi"
                             },
                             "requests": {
-                                "cpu": "6",
-                                "memory": "13G"
+                                "cpu": "11",
+                                "memory": "73Gi"
                             }
                         },
                         "terminationMessagePath": "/dev/termination-log"
