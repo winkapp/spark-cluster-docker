@@ -1,0 +1,57 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "environment": "production",
+            "name": "spark-ui-proxy"
+        },
+        "name": "spark-ui-proxy",
+        "namespace": "spark-cluster-production"
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "environment": "production",
+                    "name": "spark-ui-proxy"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "livenessProbe": {
+                            "httpGet": {
+                                "path": "/",
+                                "port": 80
+                            },
+                            "initialDelaySeconds": 60,
+                            "timeoutSeconds": 5
+                        },
+                        "args": [
+                            "spark-webui:8080"
+                        ],
+                        "image": "ursuad/spark-ui-proxy",
+                        "name": "spark-ui-proxy",
+                        "ports": [
+                            {
+                                "containerPort": 80
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "250m",
+                                "memory": "75Mi"
+                            },
+                            "limits": {
+                                "cpu": "250m",
+                                "memory": "75Mi"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
