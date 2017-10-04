@@ -1,5 +1,23 @@
 ## Quickstart
 
+### With docker-compose
+
+with docker and docker-compose available on your system
+
+run `$ docker-compose up`
+
+to spin up a single worker and master
+
+`$ docker-compose down` will take them down again
+
+`$ docker-compose scale spark-worker=X` will spin up `X` instances of spark workers and attach them to the master node.
+
+have fun!
+
+### With vanilla docker
+
+*note: there seems to be a break with docker >= 1.12.6 in which --name is not causing the containers to resolve either internally (i.e. `SPARK_MASTER_HOST=spark-master`) or in --link*
+
 To quickly spin up a Spark cluster, make sure you have Docker installed, and issue the following two commands (in different terminal windows):
 
     docker run -it -p 8080:8080 -p 7077:7077 -p 6066:6066 --rm \
@@ -11,7 +29,11 @@ To quickly spin up a Spark cluster, make sure you have Docker installed, and iss
     SPARK_MASTER_URL=spark://spark-master:7077 \
     winkapp/spark-standalone worker
 
+### Web UI & Healthcheck
+
 After about a minute, you should be able to hit the spark web UI. If you are using OSX and docker-machine, go to http://{ip of docker host vm}:8080. If you don't know the ip of your docker host vm, try `docker-machine ls`. If you are using linux, just go to http://localhost:8080. You should see the Spark Web UI with one worker active.
+
+to attach to a worker node ui you can run `docker-compose ps` or `docker-ps` to show the host port number each worker container's ui port (8081) is attached to
 
 Now we will submit a job to make sure our cluster is working.
 
