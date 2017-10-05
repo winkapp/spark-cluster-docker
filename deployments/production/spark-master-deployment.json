@@ -27,7 +27,11 @@
                         "env": [
                             {
                                 "name": "SPARK_MASTER_HOST",
-                                "value": "spark-cluster-master"
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "fieldPath": "status.podIP"
+                                    }
+                                }
                             },
                             {
                                 "name": "SPARK_MASTER_PORT",
@@ -36,17 +40,29 @@
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
                         "imagePullPolicy": "Always",
+                        "livenessProbe": {
+                            "tcpSocket": {
+                                "port": "http"
+                            },
+                            "initialDelaySeconds": 60
+                        },
                         "name": "spark-master",
                         "ports": [
                             {
                                 "containerPort": 7077,
-                                "protocol": "TCP"
+                                "name": "worker-port"
                             },
                             {
                                 "containerPort": 8080,
-                                "protocol": "TCP"
+                                "name": "http"
                             }
                         ],
+                        "readinessProbe": {
+                            "tcpSocket": {
+                                "port": "worker-port"
+                            },
+                            "initialDelaySeconds": 60
+                        },
                         "resources": {
                             "limits": {
                                 "cpu": "100m",
