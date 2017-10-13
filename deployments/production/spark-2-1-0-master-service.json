@@ -10,7 +10,6 @@
         }
     },
     "spec": {
-        "clusterIP": "None",
         "ports": [
             {
                 "name": "worker-port",
@@ -24,7 +23,6 @@
             "name": "spark-master-2-1-0",
             "tag": "2.1.0"
         },
-        "sessionAffinity": "None",
         "type": "ClusterIP"
     }
 }
