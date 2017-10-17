@@ -49,6 +49,12 @@
                                 "name": "worker-port"
                             }
                         ],
+                        "livenessProbe": {
+                            "tcpSocket": {
+                                "port": "worker-port"
+                            },
+                            "initialDelaySeconds": 60
+                        },
                         "readinessProbe": {
                             "tcpSocket": {
                                 "port": "worker-port"
