@@ -52,18 +52,20 @@
                             {
                                 "name": "SPARK_MASTER_PORT",
                                 "value": "7077"
+                            },
+                            {
+                                "name": "SPARK_WORKER_PORT",
+                                "value": "42420"
                             }
                         ],
                         "image": "quay.io/winkapp/spark-standalone:2.1.0",
                         "imagePullPolicy": "Always",
                         "livenessProbe": {
                             "failureThreshold": 3,
-                            "httpGet": {
-                                "path": "/",
-                                "port": 8081,
-                                "scheme": "HTTP"
+                            "tcpSocket": {
+                                "port": 42420
                             },
-                            "initialDelaySeconds": 10,
+                            "initialDelaySeconds": 30,
                             "periodSeconds": 30,
                             "successThreshold": 1,
                             "timeoutSeconds": 10

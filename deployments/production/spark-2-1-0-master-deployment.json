@@ -24,17 +24,12 @@
                 "containers": [
                     {
                         "args": [
-                            "/bin/bash",
                             "/usr/local/spark/sbin/start-master.sh"
                         ],
                         "env": [
                             {
                                 "name": "SPARK_MASTER_HOST",
-                                "valueFrom": {
-                                    "fieldRef": {
-                                        "fieldPath": "status.podIP"
-                                    }
-                                }
+                                "value": "spark-cluster-master-2-1-0"
                             },
                             {
                                 "name": "SPARK_MASTER_PORT",
@@ -43,12 +38,6 @@
                         ],
                         "image": "quay.io/winkapp/spark-standalone:2.1.0",
                         "imagePullPolicy": "Always",
-                        "livenessProbe": {
-                            "tcpSocket": {
-                                "port": "http"
-                            },
-                            "initialDelaySeconds": 60
-                        },
                         "name": "spark-master-2-1-0",
                         "ports": [
                             {
