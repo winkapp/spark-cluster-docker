@@ -55,12 +55,6 @@
                             },
                             "initialDelaySeconds": 60
                         },
-                        "readinessProbe": {
-                            "tcpSocket": {
-                                "port": "worker-port"
-                            },
-                            "initialDelaySeconds": 60
-                        },
                         "resources": {
                             "limits": {
                                 "cpu": "100m",
