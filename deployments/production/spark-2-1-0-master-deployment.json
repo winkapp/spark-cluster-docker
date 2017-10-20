@@ -58,11 +58,11 @@
                         "resources": {
                             "limits": {
                                 "cpu": "100m",
-                                "memory": "750Mi"
+                                "memory": "1.5Gi"
                             },
                             "requests": {
                                 "cpu": "100m",
-                                "memory": "750Mi"
+                                "memory": "1.5Gi"
                             }
                         }
                     }
