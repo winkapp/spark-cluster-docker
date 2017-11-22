@@ -60,6 +60,11 @@
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
                         "imagePullPolicy": "Always",
+                        "imagePullSecret": [
+                          {
+                            "name": "spark-pull-secret"
+                          }
+                        ],
                         "livenessProbe": {
                             "failureThreshold": 3,
                             "tcpSocket": {
