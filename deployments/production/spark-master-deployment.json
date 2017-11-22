@@ -19,6 +19,11 @@
                 }
             },
             "spec": {
+                "imagePullSecrets": [
+                  {
+                    "name": "spark-pull-secret"
+                  }
+                ],
                 "containers": [
                     {
                         "args": [
@@ -36,11 +41,6 @@
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
                         "imagePullPolicy": "Always",
-                        "imagePullSecrets": [
-                          {
-                            "name": "spark-pull-secret"
-                          }
-                        ],
                         "name": "spark-master",
                         "ports": [
                             {
