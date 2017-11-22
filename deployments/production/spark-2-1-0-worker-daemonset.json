@@ -21,6 +21,11 @@
                 "name": "spark-worker-2-1-0"
             },
             "spec": {
+                "imagePullSecrets": [
+                  {
+                    "name": "spark-pull-secret"
+                  }
+                ],
                 "containers": [
                     {
                         "args": [
