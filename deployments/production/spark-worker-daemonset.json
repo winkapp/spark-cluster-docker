@@ -60,7 +60,7 @@
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
                         "imagePullPolicy": "Always",
-                        "imagePullSecret": [
+                        "imagePullSecrets": [
                           {
                             "name": "spark-pull-secret"
                           }
