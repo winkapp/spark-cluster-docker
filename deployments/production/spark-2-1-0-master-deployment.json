@@ -21,6 +21,11 @@
                 }
             },
             "spec": {
+                "imagePullSecrets": [
+                  {
+                    "name": "spark-pull-secret"
+                  }
+                ],
                 "containers": [
                     {
                         "args": [
