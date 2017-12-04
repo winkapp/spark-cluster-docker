@@ -6,7 +6,7 @@ services:
     ports:
       - "4040:4040"
     volumes:
-      - ./spark-events:/tmp/spark-events
+      - ./spark-events:/data/spark-events
     links:
       - spark-history
       - spark-worker
@@ -17,7 +17,7 @@ services:
     ports:
       - "18080:18080"
     volumes:
-      - ./spark-events:/tmp/spark-events
+      - ./spark-events:/data/spark-events
   spark-master:
     build: .
     command: /usr/local/bootstrap.sh master
