@@ -15,10 +15,11 @@ RUN apt-get update; apt-get install -y \
 RUN curl -s http://d3kbcqa49mib13.cloudfront.net/spark-1.6.0-bin-hadoop2.6.tgz | tar -xz -C /usr/local/
 RUN cd /usr/local && ln -s spark-1.6.0-bin-hadoop2.6 spark
 ENV SPARK_HOME /usr/local/spark
+COPY conf /usr/local/spark/conf
+RUN  mkdir /data/spark-events
 ENV PATH $SPARK_HOME/bin:$PATH
 # set the python path explicitly because spark looks in the wrong spot by default
 ENV PYTHONPATH `echo "import sys; print ':'.join(sys.path)" | python`:$PYTHONPATH
 ADD bootstrap.sh /usr/local/bootstrap.sh
-COPY conf /usr/local/spark/conf
 ENTRYPOINT ["/usr/local/bootstrap.sh"]
 WORKDIR /usr/local/spark
