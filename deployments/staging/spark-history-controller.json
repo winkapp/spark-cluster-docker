@@ -1,0 +1,78 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "component": "spark-history"
+        },
+        "name": "spark-history-controller",
+        "namespace": "spark-cluster"
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "matchLabels": {
+                "component": "spark-history"
+            }
+        },
+        "strategy": {
+            "rollingUpdate": {
+                "maxSurge": 1,
+                "maxUnavailable": 1
+            },
+            "type": "RollingUpdate"
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "component": "spark-history"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "history"
+                        ],
+                        "image": "quay.io/winkapp/spark-standalone:master",
+                        "imagePullPolicy": "Always",
+                        "livenessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/",
+                                "port": 18080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 10,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "name": "spark-history",
+                        "ports": [
+                            {
+                                "containerPort": 18080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "1300Mi"
+                            },
+                            "requests": {
+                                "cpu": "1",
+                                "memory": "1300Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log"
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "restartPolicy": "Always",
+                "securityContext": {},
+                "terminationGracePeriodSeconds": 30
+            }
+        }
+    }
+}
