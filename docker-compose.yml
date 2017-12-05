@@ -1,5 +1,23 @@
 version: '2'
 services:
+  spark-repl:
+    build: .
+    command: /usr/local/spark/bin/spark-shell --master spark://spark-master:7077 
+    ports:
+      - "4040:4040"
+    volumes:
+      - ./spark-events:/data/spark-events
+    links:
+      - spark-history
+      - spark-worker
+      - spark-master
+  spark-history:
+    build: .
+    command: /usr/local/bootstrap.sh history
+    ports:
+      - "18080:18080"
+    volumes:
+      - ./spark-events:/data/spark-events
   spark-master:
     build: .
     command: /usr/local/bootstrap.sh master
