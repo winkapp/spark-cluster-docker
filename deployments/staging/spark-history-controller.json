@@ -65,8 +65,25 @@
                                 "memory": "1300Mi"
                             }
                         },
+                        "volumeMounts": [
+                          {
+                            "mountPath": "/data/spark-events",
+                            "name": "spark-history-efs"
+                          }
+                        ],
                         "terminationMessagePath": "/dev/termination-log"
                     }
+                ],
+                "imagePullSecrets": {
+                  "name": "spark-pull-secret"
+                },
+                "volumes": [
+                  {
+                    "name": "spark-history-efs",
+                    "persistentVolumeClaim": {
+                      "claimName": "spark-history-efs"
+                    }
+                  }
                 ],
                 "dnsPolicy": "ClusterFirst",
                 "restartPolicy": "Always",
