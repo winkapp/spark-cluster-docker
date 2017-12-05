@@ -74,9 +74,11 @@
                         "terminationMessagePath": "/dev/termination-log"
                     }
                 ],
-                "imagePullSecrets": {
-                  "name": "spark-pull-secret"
-                },
+                "imagePullSecrets": [
+                  {
+                    "name": "spark-pull-secret"
+                  }
+                ],
                 "volumes": [
                   {
                     "name": "spark-history-efs",
