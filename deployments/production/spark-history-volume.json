@@ -1,0 +1,23 @@
+{
+  "apiVersion": "v1",
+  "kind": "PersistentVolume",
+  "metadata": {
+    "name": "spark-history-efs",
+    "labels": {
+        "environment": "production",
+        "name": "spark-history-efs"
+    }
+  },
+  "spec": {
+    "capacity": {
+      "storage": "10Gi"
+    },
+    "accessModes": [
+      "ReadWriteMany"
+    ],
+    "nfs": {
+      "server": "fs-4d7f4904.efs.us-east-1.amazonaws.com",
+      "path": "/spark/data/spark-events"
+    }
+  }
+}

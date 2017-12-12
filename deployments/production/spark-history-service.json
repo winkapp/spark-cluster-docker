@@ -1,0 +1,23 @@
+{
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+        "name": "history-service",
+        "namespace": "spark-cluster-production"
+    },
+    "spec": {
+        "clusterIP": "None",
+        "ports": [
+            {
+                "name": "http",
+                "port": 18080,
+                "protocol": "TCP",
+                "targetPort": 18080
+            }
+        ],
+        "selector": {
+            "component": "spark-history"
+        },
+        "type": "ClusterIP"
+    }
+}

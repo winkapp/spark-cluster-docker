@@ -1,0 +1,29 @@
+{
+  "kind": "PersistentVolumeClaim",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "spark-history-efs",
+    "namespace": "spark-cluster-production",
+    "labels": {
+        "environment": "production",
+        "name": "spark-history-efs"
+    }
+  },
+  "spec": {
+    "selector": {
+        "matchLabels": {
+            "environment": "production",
+            "name": "spark-history-efs"
+        }
+    },
+    "accessModes": [
+      "ReadWriteMany"
+    ],
+    "storageClassName": "",
+    "resources": {
+      "requests": {
+        "storage": "10Gi"
+      }
+    }
+  }
+}

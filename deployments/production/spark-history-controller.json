@@ -6,7 +6,7 @@
             "component": "spark-history"
         },
         "name": "spark-history-controller",
-        "namespace": "spark-cluster"
+        "namespace": "spark-cluster-production"
     },
     "spec": {
         "replicas": 1,
