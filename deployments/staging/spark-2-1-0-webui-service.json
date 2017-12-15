@@ -7,9 +7,9 @@
         },
         "labels": {
             "environment": "staging",
-            "name": "spark-webui"
+            "name": "spark-webui-2-1-0"
         },
-        "name": "spark-webui",
+        "name": "spark-webui-2-1-0",
         "namespace": "spark-cluster"
     },
     "spec": {
@@ -22,7 +22,8 @@
         ],
         "selector": {
             "environment": "staging",
-            "name": "spark-master"
+            "name": "spark-master-2-1-0",
+            "tag": "2.1.0"
         },
         "type": "LoadBalancer"
     }

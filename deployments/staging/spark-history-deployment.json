@@ -3,29 +3,19 @@
     "kind": "Deployment",
     "metadata": {
         "labels": {
-            "component": "spark-history"
+            "environment": "staging",
+            "name": "spark-history"
         },
-        "name": "spark-history-controller",
+        "name": "spark-history",
         "namespace": "spark-cluster"
     },
     "spec": {
         "replicas": 1,
-        "selector": {
-            "matchLabels": {
-                "component": "spark-history"
-            }
-        },
-        "strategy": {
-            "rollingUpdate": {
-                "maxSurge": 1,
-                "maxUnavailable": 1
-            },
-            "type": "RollingUpdate"
-        },
         "template": {
             "metadata": {
                 "labels": {
-                    "component": "spark-history"
+                    "environment": "staging",
+                    "name": "spark-history"
                 }
             },
             "spec": {
@@ -35,24 +25,19 @@
                             "history"
                         ],
                         "image": "quay.io/winkapp/spark-standalone:master",
-                        "imagePullPolicy": "Always",
                         "livenessProbe": {
-                            "failureThreshold": 3,
                             "httpGet": {
                                 "path": "/",
-                                "port": 18080,
-                                "scheme": "HTTP"
+                                "port": 18080
                             },
                             "initialDelaySeconds": 10,
                             "periodSeconds": 30,
-                            "successThreshold": 1,
                             "timeoutSeconds": 10
                         },
                         "name": "spark-history",
                         "ports": [
                             {
-                                "containerPort": 18080,
-                                "protocol": "TCP"
+                                "containerPort": 18080
                             }
                         ],
                         "resources": {
@@ -70,8 +55,7 @@
                             "mountPath": "/data/spark-events",
                             "name": "spark-history-efs"
                           }
-                        ],
-                        "terminationMessagePath": "/dev/termination-log"
+                        ]
                     }
                 ],
                 "imagePullSecrets": [
@@ -86,11 +70,7 @@
                       "claimName": "spark-history-efs"
                     }
                   }
-                ],
-                "dnsPolicy": "ClusterFirst",
-                "restartPolicy": "Always",
-                "securityContext": {},
-                "terminationGracePeriodSeconds": 30
+                ]
             }
         }
     }

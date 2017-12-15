@@ -1,0 +1,79 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "environment": "staging",
+            "name": "spark-master-2-1-0",
+            "tag": "2.1.0"
+        },
+        "name": "spark-master-2-1-0",
+        "namespace": "spark-cluster"
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "environment": "staging",
+                    "name": "spark-master-2-1-0",
+                    "tag": "2.1.0"
+                }
+            },
+            "spec": {
+                
+                "containers": [
+                    {
+                        "args": [
+                            "/usr/local/spark/sbin/start-master.sh"
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_MASTER_HOST",
+                                "value": "spark-cluster-master-2-1-0"
+                            },
+                            {
+                                "name": "SPARK_MASTER_PORT",
+                                "value": "7077"
+                            }
+                        ],
+                        "image": "quay.io/winkapp/spark-standalone:2.1.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "spark-master-2-1-0",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "name": "http"
+                            },
+                            {
+                                "containerPort": 7077,
+                                "name": "worker-port"
+                            }
+                        ],
+                        "livenessProbe": {
+                            "tcpSocket": {
+                                "port": "worker-port"
+                            },
+                            "initialDelaySeconds": 60
+                        },
+                        "resources": {
+                            "limits": {
+                                "cpu": "100m",
+                                "memory": "1.5Gi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "1.5Gi"
+                            }
+                        }
+                    }
+                ],
+                "imagePullSecrets": [
+                  {
+                    "name": "spark-pull-secret"
+                  }
+                ]
+            }
+        }
+    }
+}

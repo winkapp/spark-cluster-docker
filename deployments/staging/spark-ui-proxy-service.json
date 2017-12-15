@@ -2,27 +2,27 @@
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
-        "annotations": {
-            "service.beta.kubernetes.io/aws-load-balancer-internal": "0.0.0.0/0"
-        },
         "labels": {
             "environment": "staging",
-            "name": "spark-webui"
+            "name": "spark-ui-proxy"
         },
-        "name": "spark-webui",
+        "name": "spark-ui-proxy",
         "namespace": "spark-cluster"
     },
     "spec": {
+        "loadBalancerSourceRanges": [
+            "52.1.23.50/32",
+            "104.247.48.10/32"
+        ],
         "ports": [
             {
-                "name": "http",
-                "port": 8080,
-                "targetPort": 8080
+                "port": 80,
+                "targetPort": 80
             }
         ],
         "selector": {
             "environment": "staging",
-            "name": "spark-master"
+            "name": "spark-ui-proxy"
         },
         "type": "LoadBalancer"
     }

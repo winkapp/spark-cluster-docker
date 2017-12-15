@@ -1,0 +1,71 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "environment": "staging",
+            "name": "spark-2-1-0-ui-proxy"
+        },
+        "name": "spark-2-1-0-ui-proxy",
+        "namespace": "spark-cluster"
+    },
+    "spec": {
+        "replicas": 3,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "environment": "staging",
+                    "name": "spark-2-1-0-ui-proxy"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/",
+                                "port": 80
+                            },
+                            "initialDelaySeconds": 60,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 15
+                        },
+                        "readinessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/",
+                                "port": 80
+                            },
+                            "initialDelaySeconds": 60,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 15
+                        },
+                        "args": [
+                            "spark-webui-2-1-0:8080"
+                        ],
+                        "image": "ursuad/spark-ui-proxy",
+                        "name": "spark-2-1-0-ui-proxy",
+                        "ports": [
+                            {
+                                "containerPort": 80
+                            }
+                        ],
+                        "resources": {
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "75Mi"
+                            },
+                            "limits": {
+                                "cpu": "100m",
+                                "memory": "75Mi"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

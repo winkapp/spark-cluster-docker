@@ -4,23 +4,24 @@
     "metadata": {
         "labels": {
             "environment": "staging",
-            "name": "history-service"
+            "name": "spark-cluster-master-2-1-0"
         },
-        "name": "history-service",
+        "name": "spark-cluster-master-2-1-0",
         "namespace": "spark-cluster"
     },
     "spec": {
         "clusterIP": "None",
         "ports": [
             {
-                "name": "http",
-                "port": 18080,
-                "targetPort": 18080
+                "name": "worker-port",
+                "port": 7077,
+                "targetPort": 7077
             }
         ],
         "selector": {
             "environment": "staging",
-            "name": "spark-history"
+            "name": "spark-master-2-1-0",
+            "tag": "2.1.0"
         },
         "type": "ClusterIP"
     }

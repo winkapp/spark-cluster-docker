@@ -1,0 +1,99 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "DaemonSet",
+    "metadata": {
+        "labels": {
+            "environment": "staging",
+            "name": "spark-worker"
+        },
+        "name": "spark-worker",
+        "namespace": "spark-cluster"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "labels": {
+                    "environment": "staging",
+                    "name": "spark-worker"
+                },
+                "name": "spark-worker"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "worker"
+                        ],
+                        "env": [
+                            {
+                                "name": "SPARK_MASTER_URL",
+                                "value": "spark-cluster-master:7077"
+                            },
+                            {
+                                "name": "SPARK_WORKER_MEM",
+                                "valueFrom": {
+                                    "resourceFieldRef": {
+                                        "resource": "requests.memory"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "SPARK_WORKER_CORES",
+                                "valueFrom": {
+                                    "resourceFieldRef": {
+                                        "resource": "requests.cpu"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "SPARK_WORKER_PORT",
+                                "value": "42420"
+                            }
+                        ],
+                        "image": "quay.io/winkapp/spark-standalone:master",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 3,
+                            "tcpSocket": {
+                                "port": 42420
+                            },
+                            "initialDelaySeconds": 30,
+                            "periodSeconds": 30,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 10
+                        },
+                        "name": "spark-worker",
+                        "ports": [
+                            {
+                                "containerPort": 8081
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "2.75",
+                                "memory": "18.25Gi"
+                            },
+                            "requests": {
+                                "cpu": "2.75",
+                                "memory": "18.25Gi"
+                            }
+                        }
+                    }
+                ],
+                "imagePullSecrets": [
+                  {
+                    "name": "spark-pull-secret"
+                  }
+                ],
+                "nodeSelector": {
+                    "instance-type": "memory"
+                },
+                "tolerations": [{
+                    "key": "dedicated",
+                    "value": "memory",
+                    "effect": "NoSchedule"
+                }]
+            }
+        }
+    }
+}
