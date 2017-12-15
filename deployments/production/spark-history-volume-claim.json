@@ -2,12 +2,12 @@
   "kind": "PersistentVolumeClaim",
   "apiVersion": "v1",
   "metadata": {
-    "name": "spark-history-efs",
-    "namespace": "spark-cluster-production",
     "labels": {
         "environment": "production",
         "name": "spark-history-efs"
-    }
+    },
+    "name": "spark-history-efs",
+    "namespace": "spark-cluster-production"
   },
   "spec": {
     "selector": {

@@ -3,11 +3,11 @@
   "kind": "Service",
   "metadata": {
     "labels": {
-      "environment": "production",
+      "environment": "staging",
       "name": "log-shuttle"
     },
     "name": "log-shuttle",
-    "namespace": "spark-cluster-production"
+    "namespace": "spark-cluster"
   },
   "spec": {
     "ports": [
@@ -18,7 +18,7 @@
       }
     ],
     "selector": {
-      "environment": "production",
+      "environment": "staging",
       "name": "log-shuttle"
     },
     "type": "ClusterIP"

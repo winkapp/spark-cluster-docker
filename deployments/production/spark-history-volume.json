@@ -2,11 +2,11 @@
   "apiVersion": "v1",
   "kind": "PersistentVolume",
   "metadata": {
-    "name": "spark-history-efs",
     "labels": {
         "environment": "production",
         "name": "spark-history-efs"
-    }
+    },
+    "name": "spark-history-efs"
   },
   "spec": {
     "capacity": {

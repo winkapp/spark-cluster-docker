@@ -3,19 +3,19 @@
     "kind": "Deployment",
     "metadata": {
         "labels": {
-            "environment": "production",
-            "name": "wink-spark-log-shuttle"
+            "environment": "staging",
+            "name": "log-shuttle"
         },
-        "name": "wink-spark-log-shuttle",
-        "namespace": "spark-cluster-production"
+        "name": "log-shuttle",
+        "namespace": "spark-cluster"
     },
     "spec": {
         "replicas": 1,
         "template": {
             "metadata": {
                 "labels": {
-                    "environment": "production",
-                    "name": "wink-spark-log-shuttle"
+                    "environment": "staging",
+                    "name": "log-shuttle"
                 }
             },
             "spec": {
@@ -67,7 +67,7 @@
                             },
                             {
                                 "name": "TAGS",
-                                "value": "environment:production"
+                                "value": "environment:staging"
                             },
                             {
                                 "name": "LOG_LEVEL",
@@ -75,12 +75,11 @@
                             }
                         ],
                         "image": "quay.io/winkapp/kinesis-log-shuttle:l2met",
-                        "imagePullPolicy": "Always",
-                        "name": "kinesis-log-shuttle",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "log-shuttle",
                         "ports": [
                             {
-                                "containerPort": 514,
-                                "protocol": "TCP"
+                                "containerPort": 514
                             }
                         ],
                         "resources": {
@@ -92,15 +91,13 @@
                                 "cpu": "10m",
                                 "memory": "10Mi"
                             }
-                        },
-                        "terminationMessagePath": "/dev/termination-log",
-                        "terminationMessagePolicy": "File"
+                        }
                     }
                 ],
                 "dnsPolicy": "Default",
                 "imagePullSecrets": [
                     {
-                        "name": "winkapp-wink-spark-deployments-pull-secret"
+                        "name": "spark-pull-secret"
                     }
                 ]
             }

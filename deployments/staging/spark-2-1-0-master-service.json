@@ -4,9 +4,9 @@
     "metadata": {
         "labels": {
             "environment": "staging",
-            "name": "spark-cluster-master"
+            "name": "spark-cluster-master-2-1-0"
         },
-        "name": "spark-cluster-master",
+        "name": "spark-cluster-master-2-1-0",
         "namespace": "spark-cluster"
     },
     "spec": {
@@ -20,7 +20,8 @@
         ],
         "selector": {
             "environment": "staging",
-            "name": "spark-master"
+            "name": "spark-master-2-1-0",
+            "tag": "2.1.0"
         },
         "type": "ClusterIP"
     }

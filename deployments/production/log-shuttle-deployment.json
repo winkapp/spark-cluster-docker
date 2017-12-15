@@ -1,0 +1,105 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "environment": "production",
+            "name": "log-shuttle"
+        },
+        "name": "log-shuttle",
+        "namespace": "spark-cluster-production"
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "environment": "production",
+                    "name": "log-shuttle"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "-server",
+                            "-protocol",
+                            "tcp"
+                        ],
+                        "env": [
+                            {
+                                "name": "LOGS_URL",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "kinesisurl",
+                                        "name": "wink-spark-log-shuttle-secrets"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "APP_NAME",
+                                "value": "wink_spark"
+                            },
+                            {
+                                "name": "BATCH_SIZE",
+                                "value": "150"
+                            },
+                            {
+                                "name": "INPUT_FORMAT",
+                                "value": "rfc5424"
+                            },
+                            {
+                                "name": "KINESIS_SHARDS",
+                                "value": "2000000"
+                            },
+                            {
+                                "name": "MAX_LINE_LENGTH",
+                                "value": "32000"
+                            },
+                            {
+                                "name": "OUTLET_TOKEN",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "key": "datadogtoken",
+                                        "name": "wink-spark-log-shuttle-secrets"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "TAGS",
+                                "value": "environment:production"
+                            },
+                            {
+                                "name": "LOG_LEVEL",
+                                "value": "INFO"
+                            }
+                        ],
+                        "image": "quay.io/winkapp/kinesis-log-shuttle:l2met",
+                        "name": "log-shuttle",
+                        "ports": [
+                            {
+                                "containerPort": 514
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "20m",
+                                "memory": "20Mi"
+                            },
+                            "requests": {
+                                "cpu": "10m",
+                                "memory": "10Mi"
+                            }
+                        }
+                    }
+                ],
+                "dnsPolicy": "Default",
+                "imagePullSecrets": [
+                    {
+                        "name": "spark-pull-secret"
+                    }
+                ]
+            }
+        }
+    }
+}

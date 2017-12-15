@@ -1,0 +1,57 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "environment": "staging",
+            "name": "zeppelin-controller-2-1-0",
+            "tag": "2.1.0",
+            "team": "data"
+        },
+        "name": "zeppelin-controller-2-1-0",
+        "namespace": "spark-cluster"
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "environment": "staging",
+                    "name": "zeppelin-controller-2-1-0",
+                    "tag": "2.1.0",
+                    "team": "data"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "dylanmei/zeppelin:0.7.1",
+                        "livenessProbe": {
+                            "httpGet": {
+                                "path": "/",
+                                "port": 8080
+                            },
+                            "initialDelaySeconds": 10,
+                            "periodSeconds": 30,
+                            "timeoutSeconds": 10
+                        },
+                        "name": "zeppelin-controller-2-1-0",
+                        "ports": [
+                            {
+                                "containerPort": 8080
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": "100m"
+                            },
+                            "requests": {
+                                "cpu": "100m"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
