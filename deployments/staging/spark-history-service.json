@@ -4,9 +4,9 @@
     "metadata": {
         "labels": {
             "environment": "staging",
-            "name": "history-service"
+            "name": "spark-history"
         },
-        "name": "history-service",
+        "name": "spark-history",
         "namespace": "spark-cluster"
     },
     "spec": {
