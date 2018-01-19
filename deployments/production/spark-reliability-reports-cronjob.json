@@ -1,0 +1,140 @@
+{
+  "apiVersion": "batch/v2alpha1",
+  "kind": "CronJob",
+  "metadata": {
+    "labels": {
+      "environment": "production",
+      "name": "spark-reliability-reports"
+    },
+    "name": "spark-reliability-reports",
+    "namespace": "spark-cluster-production"
+  },
+  "spec": {
+    "concurrencyPolicy": "Forbid",
+    "failedJobsHistoryLimit": 1,
+    "jobTemplate": {
+      "metadata": {
+        "labels": {
+          "environment": "production",
+          "name": "spark-reliability-reports"
+        }
+      },
+      "spec": {
+        "template": {
+          "metadata": {
+            "labels": {
+              "environment": "production",
+              "name": "spark-reliability-reports"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "env": [
+                  {
+                    "name": "MASTER_HOST",
+                    "value": "spark-cluster-master"
+                  },
+                  {
+                    "name": "MASTER_PORT",
+                    "value": "7077"
+                  },
+                  {
+                    "name": "SPARK_EXECUTOR_CORES",
+                    "value": "8"
+                  },
+                  {
+                    "name": "SPARK_EXECUTOR_MEMORY",
+                    "value": "7G"
+                  },
+                  {
+                    "name": "SPARK_DRIVER_MEMORY",
+                    "value": "2G"
+                  },
+                  {
+                    "name": "SYSLOG_HOST",
+                    "value": "log-shuttle.spark-cluster-production.svc.cluster.local"
+                  },
+                  {
+                    "name": "SYSLOG_PORT",
+                    "value": "514"
+                  },
+                  {
+                    "name": "WINK_SPARK_LOG_ENV",
+                    "value": "production"
+                  },
+                  {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "aws_access_key_id",
+                        "name": "spark-rel-production-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "AWS_SECRET_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "aws_secret_access_key",
+                        "name": "spark-rel-production-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "REDSHIFT_HOST",
+                    "value": "rollups-production.wink.com"
+                  },
+                  {
+                    "name": "REDSHIFT_USER",
+                    "value": "rollup_writer"
+                  },
+                  {
+                    "name": "REDSHIFT_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "redshift_password",
+                        "name": "spark-rel-production-secrets"
+                      }
+                    }
+                  }
+                ],
+                "image": "quay.io/winkapp/wink-spark:production",
+                "imagePullPolicy": "Always",
+                "name": "wink-spark",
+                "resources": {
+                  "limits": {
+                    "cpu": "1500m",
+                    "memory": "14000Mi"
+                  },
+                  "requests": {
+                    "cpu": "1",
+                    "memory": "11000Mi"
+                  }
+                }
+              }
+            ],
+            "imagePullSecrets": [
+              {
+                "name": "winkapp-ml-sot-deployment-pull-secret"
+              }
+            ],
+            "nodeSelector": {
+              "instance-type": "memory"
+            },
+            "restartPolicy": "Never",
+            "tolerations": [
+              {
+                "effect": "NoSchedule",
+                "key": "dedicated",
+                "value": "memory"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "schedule": "30 12 * * *",
+    "successfulJobsHistoryLimit": 3
+  }
+}

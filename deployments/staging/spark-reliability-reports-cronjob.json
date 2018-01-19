@@ -1,0 +1,144 @@
+{
+  "apiVersion": "batch/v2alpha1",
+  "kind": "CronJob",
+  "metadata": {
+    "labels": {
+      "environment": "staging",
+      "name": "spark-reliability-reports"
+    },
+    "name": "spark-reliability-reports",
+    "namespace": "spark-cluster"
+  },
+  "spec": {
+    "concurrencyPolicy": "Forbid",
+    "failedJobsHistoryLimit": 1,
+    "jobTemplate": {
+      "metadata": {
+        "labels": {
+          "environment": "staging",
+          "name": "spark-reliability-reports"
+        }
+      },
+      "spec": {
+        "template": {
+          "metadata": {
+            "labels": {
+              "environment": "staging",
+              "name": "spark-reliability-reports"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "env": [
+                  {
+                    "name": "MASTER_HOST",
+                    "value": "spark-cluster-master"
+                  },
+                  {
+                    "name": "MASTER_PORT",
+                    "value": "7077"
+                  },
+                  {
+                    "name": "SPARK_EXECUTOR_CORES",
+                    "value": "8"
+                  },
+                  {
+                    "name": "SPARK_EXECUTOR_MEMORY",
+                    "value": "5G"
+                  },
+                  {
+                    "name": "SPARK_DRIVER_MEMORY",
+                    "value": "2G"
+                  },
+                  {
+                    "name": "SYSLOG_HOST",
+                    "value": "log-shuttle.spark-cluster.svc.cluster.local"
+                  },
+                  {
+                    "name": "SYSLOG_PORT",
+                    "value": "514"
+                  },
+                  {
+                    "name": "WINK_SPARK_LOG_ENV",
+                    "value": "staging"
+                  },
+                  {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "aws_access_key_id",
+                        "name": "spark-rel-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "AWS_SECRET_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "aws_secret_access_key",
+                        "name": "spark-rel-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "REDSHIFT_HOST",
+                    "value": "rollups-staging.wink.com"
+                  },
+                  {
+                    "name": "REDSHIFT_USER",
+                    "value": "stg_rollup_writer"
+                  },
+                  {
+                    "name": "REDSHIFT_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "redshift_password",
+                        "name": "spark-rel-staging-secrets"
+                      }
+                    }
+                  }
+                ],
+                "image": "quay.io/winkapp/wink-spark:master",
+                "imagePullPolicy": "Always",
+                "name": "wink-spark",
+                "resources": {
+                  "limits": {
+                    "cpu": "1",
+                    "memory": "9000Mi"
+                  },
+                  "requests": {
+                    "cpu": "1",
+                    "memory": "6000Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/data/spark-events",
+                    "name": "spark-history-efs"
+                  }
+                ]
+              }
+            ],
+            "imagePullSecrets": [
+              {
+                "name": "winkapp-ml-sot-deployment-pull-secret"
+              }
+            ],
+            "restartPolicy": "Never",
+            "volumes": [
+              {
+                "name": "spark-history-efs",
+                "persistentVolumeClaim": {
+                  "claimName": "spark-history-efs"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "schedule": "30 12 * * *",
+    "successfulJobsHistoryLimit": 3
+  }
+}

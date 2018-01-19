@@ -1,0 +1,140 @@
+{
+  "apiVersion": "batch/v2alpha1",
+  "kind": "CronJob",
+  "metadata": {
+    "labels": {
+      "environment": "staging",
+      "name": "engagement-metrics-etl-porch-lights"
+    },
+    "name": "engagement-metrics-etl-porch-lights",
+    "namespace": "spark-cluster"
+  },
+  "spec": {
+    "concurrencyPolicy": "Forbid",
+    "failedJobsHistoryLimit": 1,
+    "jobTemplate": {
+      "metadata": {
+        "labels": {
+          "environment": "staging",
+          "name": "engagement-metrics-etl-porch-lights"
+        }
+      },
+      "spec": {
+        "template": {
+          "metadata": {
+            "labels": {
+              "environment": "staging",
+              "name": "engagement-metrics-etl-porch-lights"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "sbt",
+                  "sparkSubmit"
+                ],
+                "env": [
+                  {
+                    "name": "SPARK_MASTER_HOST",
+                    "value": "spark-cluster-master-2-1-0"
+                  },
+                  {
+                    "name": "SPARK_MASTER_PORT",
+                    "value": "7077"
+                  },
+                  {
+                    "name": "SPARK_MASTER_URL",
+                    "value": "spark://$(SPARK_MASTER_HOST):$(SPARK_MASTER_PORT)"
+                  },
+                  {
+                    "name": "SPARK_ENTRY_CLASS",
+                    "value": "com.wink.spark.runner.PorchLightsEngagement"
+                  },
+                  {
+                    "name": "TARGET_ENVIRONMENT",
+                    "value": "staging"
+                  },
+                  {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "value": "AKIAIIY5ZNGCF537BCHA"
+                  },
+                  {
+                    "name": "AWS_SECRET_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "awssecretaccesskey",
+                        "name": "engagement-metrics-etl-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ENGAGEMENT_DB_PORT",
+                    "value": "5439"
+                  },
+                  {
+                    "name": "ENGAGEMENT_DB_HOST",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "databasehost",
+                        "name": "engagement-metrics-etl-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ENGAGEMENT_DB_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "databaseuser",
+                        "name": "engagement-metrics-etl-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ENGAGEMENT_DB_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "databasepass",
+                        "name": "engagement-metrics-etl-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "ENGAGEMENT_DB_NAME",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "databasename",
+                        "name": "engagement-metrics-etl-staging-secrets"
+                      }
+                    }
+                  }
+                ],
+                "image": "quay.io/winkapp/engagement-metric-etl:staging",
+                "imagePullPolicy": "Always",
+                "name": "engagement-metrics-etl-porch-lights",
+                "resources": {
+                  "limits": {
+                    "cpu": "1500m",
+                    "memory": "9000Mi"
+                  },
+                  "requests": {
+                    "cpu": "1000m",
+                    "memory": "7500Mi"
+                  }
+                }
+              }
+            ],
+            "imagePullSecrets": [
+              {
+                "name": "winkapp-engagement-metrics-etl-pull-secret"
+              }
+            ],
+            "restartPolicy": "Never"
+          }
+        }
+      }
+    },
+    "schedule": "15 5 * * *",
+    "successfulJobsHistoryLimit": 3
+  }
+}

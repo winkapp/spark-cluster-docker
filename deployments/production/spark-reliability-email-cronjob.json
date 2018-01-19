@@ -1,0 +1,130 @@
+{
+  "apiVersion": "batch/v2alpha1",
+  "kind": "CronJob",
+  "metadata": {
+    "labels": {
+      "environment": "production",
+      "name": "spark-reliability-email"
+    },
+    "name": "spark-reliability-email",
+    "namespace": "spark-cluster-production"
+  },
+  "spec": {
+    "concurrencyPolicy": "Forbid",
+    "failedJobsHistoryLimit": 1,
+    "jobTemplate": {
+      "metadata": {
+        "labels": {
+          "environment": "production",
+          "name": "spark-reliability-email"
+        }
+      },
+      "spec": {
+        "template": {
+          "metadata": {
+            "labels": {
+              "environment": "production",
+              "name": "spark-reliability-email"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "args": [
+                  "run"
+                ],
+                "command": [
+                  "ant"
+                ],
+                "env": [
+                  {
+                    "name": "WINK_SPARK_LOG_ENV",
+                    "value": "production"
+                  },
+                  {
+                    "name": "WINK_NO_SPARK",
+                    "value": "True"
+                  },
+                  {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "aws_access_key_id",
+                        "name": "spark-rel-production-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "AWS_SECRET_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "aws_secret_access_key",
+                        "name": "spark-rel-production-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "REDSHIFT_HOST",
+                    "value": "rollups-production.wink.com"
+                  },
+                  {
+                    "name": "REDSHIFT_USER",
+                    "value": "rollup_writer"
+                  },
+                  {
+                    "name": "REDSHIFT_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "redshift_password",
+                        "name": "spark-rel-production-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "HIGHCHARTS_HOST",
+                    "value": "https://highcharts-production.wink.com:443"
+                  },
+                  {
+                    "name": "WINK_EMAIL_DAILY",
+                    "value": "reliability@wink.com"
+                  }
+                ],
+                "image": "quay.io/winkapp/wink-spark:production",
+                "imagePullPolicy": "Always",
+                "name": "wink-spark",
+                "resources": {
+                  "limits": {
+                    "cpu": "1500m",
+                    "memory": "14000Mi"
+                  },
+                  "requests": {
+                    "cpu": "1",
+                    "memory": "11000Mi"
+                  }
+                }
+              }
+            ],
+            "imagePullSecrets": [
+              {
+                "name": "winkapp-ml-sot-deployment-pull-secret"
+              }
+            ],
+            "nodeSelector": {
+              "instance-type": "memory"
+            },
+            "restartPolicy": "Never",
+            "tolerations": [
+              {
+                "effect": "NoSchedule",
+                "key": "dedicated",
+                "value": "memory"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "schedule": "30 13 * * *",
+    "successfulJobsHistoryLimit": 3
+  }
+}

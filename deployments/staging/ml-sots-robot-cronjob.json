@@ -1,0 +1,164 @@
+{
+  "apiVersion": "batch/v2alpha1",
+  "kind": "CronJob",
+  "metadata": {
+    "labels": {
+      "environment": "staging",
+      "name": "ml-sots-robot"
+    },
+    "name": "ml-sots-robot",
+    "namespace": "spark-cluster"
+  },
+  "spec": {
+    "concurrencyPolicy": "Forbid",
+    "failedJobsHistoryLimit": 1,
+    "jobTemplate": {
+      "metadata": {
+        "labels": {
+          "environment": "staging",
+          "name": "ml-sots-robot"
+        }
+      },
+      "spec": {
+        "template": {
+          "metadata": {
+            "labels": {
+              "environment": "staging",
+              "name": "ml-sots-robot"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "env": [
+                  {
+                    "name": "MASTER_HOST",
+                    "value": "spark-cluster-master"
+                  },
+                  {
+                    "name": "MASTER_PORT",
+                    "value": "7077"
+                  },
+                  {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "value": "AKIAIXU6VCNIUETQW6MA"
+                  },
+                  {
+                    "name": "AWS_SECRET_ACCESS_KEY",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "awssecretaccesskey2",
+                        "name": "ml-sots-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "AWS_BUCKET",
+                    "value": "wink-sots-staging"
+                  },
+                  {
+                    "name": "SOT_ENV",
+                    "value": "staging"
+                  },
+                  {
+                    "name": "DATABASE_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "databaseurl",
+                        "name": "ml-sots-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DATABASE_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "databaseuser",
+                        "name": "ml-sots-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "DATABASE_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "databasepass",
+                        "name": "ml-sots-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CONCIERGE_DATABASE_URL",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "concierge_databaseurl",
+                        "name": "ml-sots-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CONCIERGE_DATABASE_USER",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "concierge_databaseuser",
+                        "name": "ml-sots-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "CONCIERGE_DATABASE_PASSWORD",
+                    "valueFrom": {
+                      "secretKeyRef": {
+                        "key": "concierge_databasepassword",
+                        "name": "ml-sots-staging-secrets"
+                      }
+                    }
+                  },
+                  {
+                    "name": "TAXO_HOST",
+                    "value": "staging-taxonomer.wink.com"
+                  }
+                ],
+                "image": "quay.io/winkapp/ml-sots:master",
+                "imagePullPolicy": "Always",
+                "name": "ml-sots",
+                "resources": {
+                  "limits": {
+                    "cpu": "1500m",
+                    "memory": "9000Mi"
+                  },
+                  "requests": {
+                    "cpu": "1000m",
+                    "memory": "7500Mi"
+                  }
+                },
+                "volumeMounts": [
+                  {
+                    "mountPath": "/data/spark-events",
+                    "name": "spark-history-efs"
+                  }
+                ]
+              }
+            ],
+            "imagePullSecrets": [
+              {
+                "name": "winkapp-ml-sot-deployment-pull-secret"
+              }
+            ],
+            "restartPolicy": "Never",
+            "volumes": [
+              {
+                "name": "spark-history-efs",
+                "persistentVolumeClaim": {
+                  "claimName": "spark-history-efs"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "schedule": "05 4 * * *",
+    "successfulJobsHistoryLimit": 3
+  }
+}
